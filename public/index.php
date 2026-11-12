@@ -1,4 +1,10 @@
 <?php
+require_once dirname(__FILE__) . '/../src/Model/Product.php';
+require_once dirname(__FILE__) . '/../src/Model/Category.php';
+require_once dirname(__FILE__) . '/../src/functions.php';
+
+$category = new Category(2, 'Оборудование');
+$product = new Product(1, 'Товар 1', 436.5, 2);
 ?>
 <!doctype html>
 <html lang="ru">
@@ -10,7 +16,12 @@
 <body>
   <main>
     <h1>Каталог товаров</h1>
-    <p>Практика 5: каркас проекта готов. Классы добавим на следующих шагах.</p>
+    <p>Категория: <?= e($category->getName()) ?></p>
+    <p>
+      Товар: <?= e($product->getName()) ?>,
+      цена: <?= e((string) $product->getPrice()) ?>,
+      Id: <?= e((string) $product->getCategoryId()) ?>
+    </p>
   </main>
 </body>
 </html>
