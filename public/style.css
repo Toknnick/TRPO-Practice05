@@ -65,3 +65,29 @@ main {
   background: #f3f4f6;
   color: #6b7280;
 }
+
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.filter label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.filter button {
+  background: #315efb;
+  color: #fff;
+  border-color: #315efb;
+  cursor: pointer;
+}

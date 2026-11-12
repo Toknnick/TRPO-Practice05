@@ -33,6 +33,21 @@ $averagePrice = $catalogService->averagePrice($products);
     <p>Товаров (с учётом фильтра): <?= e(count($products)) ?></p>
     <p>Средняя цена: <?= e(number_format($averagePrice, 2, '.', ' ') . ' ₽') ?></p>
 
+    <form class="filter" method="get" action="">
+    <label>Категория
+      <select name="category_id">
+        <option value="">Все</option>
+        <?php foreach ($categories as $category): ?>
+          <option
+            value="<?= e((string) $category->getId()) ?>"
+            <?= $filterCategoryId === $category->getId() ? ' selected' : '' ?>
+          ><?= e($category->getName()) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </label>
+    <button type="submit">Показать</button>
+  </form>
+
     <div class="stats">
   <p>Категорий: <?= e((string) count($categories)) ?></p>
   <p>Товаров (с учётом фильтра): <?= e((string) count($products)) ?></p>
