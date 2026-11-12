@@ -7,13 +7,13 @@ PHP ООП: классы, конструкторы и модели предме�
 
 ## Результат
 
-PHP-каталог товаров: классы `Product`, `Category`, сервис `CatalogService`, данные из JSON.
+Каталог товаров из JSON: классы `Product` и `Category`, сервис `CatalogService`, фильтр по категории, средняя цена, HTML-карточки.
 
 ## Технологии
 
 - PHP 8+
-- HTML
-- CSS
+- HTML / CSS
+- JSON dataset
 
 ## Запуск
 
@@ -29,20 +29,47 @@ php -S localhost:8000 -t public
 
 ## Структура проекта
 
-- `public/index.php` — точка входа и HTML
-- `src/Model/` — классы предметной области
-- `src/Service/` — сервисы (загрузка, фильтр, агрегаты)
+- `public/index.php` — точка входа, GET-фильтр, HTML
+- `public/style.css` — стили
+- `src/Model/Product.php`, `Category.php` — модели предметной области
+- `src/Service/CatalogService.php` — загрузка JSON, фильтр, средняя цена
+- `src/functions.php` — `e()`, `categoryNameById()`
 - `data/` — рабочие копии данных
 - `dataset/` — исходный dataset задания
 - `README.md`
 - `.gitignore`
 
+## Схема ответственности
+
+```text
+products.json / categories.json
+        │
+        ▼
+ CatalogService  — читает JSON, создаёт объекты, фильтрует, считает среднюю цену
+        │
+        ├── Product   — один товар (данные + предметные методы)
+        └── Category  — одна категория
+        │
+        ▼
+ public/index.php — запрос пользователя (GET) и HTML-карточки
+```
+
+- **Product / Category** — состояние и поведение объекта, без HTML.
+- **CatalogService** — работа с файлами и набором объектов.
+- **index.php** — ввод (фильтр) и отображение; модели внутрь разметки не тащим.
+
 ## Dataset
 
-- `products.json` — товары
+- `products.json` — товары (`id`, `name`, `price`, `category_id`, `active`)
 - `categories.json` — категории
 - `class_requirements.csv` — обязательные свойства классов
 
-## Статус
+## Почему ручной require_once неудобен при росте проекта
 
-Шаг 1: создан каркас проекта и скопирован dataset.
+Сейчас классы подключаются явно через `require_once`. Пока файлов мало — это нормально. При росте проекта легко забыть подключение, продублировать его или перепутать порядок. Обычно дальше подключают **Composer autoload (PSR-4)**: по имени класса файл находится автоматически, без длинного списка `require_once`.
+
+## Проверка
+
+1. Главная показывает товары из `data/products.json` и среднюю цену.
+2. Фильтр по категории меняет список и URL (`?category_id=2`).
+3. Конструктор `Product` отвергает некорректные значения через `InvalidArgumentException`.
