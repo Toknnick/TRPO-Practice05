@@ -1,10 +1,16 @@
 <?php
 require_once dirname(__FILE__) . '/../src/Model/Product.php';
 require_once dirname(__FILE__) . '/../src/Model/Category.php';
+require_once dirname(__FILE__) . '/../src/Service/CatalogService.php';
 require_once dirname(__FILE__) . '/../src/functions.php';
 
-$category = new Category(2, 'Оборудование');
-$product = new Product(1, 'Товар 1', 436.5, 2);
+$catalog = new CatalogService(
+    dirname(__FILE__) . '/../data/products.json',
+    dirname(__FILE__) . '/../data/categories.json'
+);
+
+$products = $catalog->getProducts();
+$categories = $catalog->getCategories();
 ?>
 <!doctype html>
 <html lang="ru">
@@ -16,12 +22,14 @@ $product = new Product(1, 'Товар 1', 436.5, 2);
 <body>
   <main>
     <h1>Каталог товаров</h1>
-    <p>Категория: <?= e($category->getName()) ?></p>
-    <p>
-      Товар: <?= e($product->getName()) ?>,
-      цена: <?= e((string) $product->getPrice()) ?>,
-      Id: <?= e((string) $product->getCategoryId()) ?>
-    </p>
+    <p>Категорий: <?= e((string) count($categories)) ?></p>
+    <p>Товаров: <?= e((string) count($products)) ?></p>
+
+    <ul>
+      <?php foreach ($products as $product): ?>
+        <li><?= e($product->label()) ?></li>
+      <?php endforeach; ?>
+    </ul>
   </main>
 </body>
 </html>
