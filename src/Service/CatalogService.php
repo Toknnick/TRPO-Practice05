@@ -58,4 +58,29 @@ final class CatalogService
 
         return $data;
     }
+
+    public function filterByCategory(array $products, ?int $categoryId): array
+    {
+        if ($categoryId === null) {
+            return $products;
+        }
+        $filtered = [];
+        foreach ($products as $product) {
+            if ($product->belongsToCategory($categoryId)) {
+                $filtered[] = $product;
+            }
+        }
+        return $filtered;
+    }
+    public function averagePrice(array $products): float
+    {
+        if ($products === []) {
+            return 0.0;
+        }
+        $sum = 0.0;
+        foreach ($products as $product) {
+            $sum += $product->getPrice();
+        }
+        return $sum / count($products);
+    }
 }
